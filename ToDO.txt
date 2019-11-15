@@ -1,0 +1,4 @@
+1. Produce the heatmaps using LRP => Done
+2. Implement the SIFT algorithm => Done
+3. Perform k-means clustering to create the codebook
+4. Naive Bayes
