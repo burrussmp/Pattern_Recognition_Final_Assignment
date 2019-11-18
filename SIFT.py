@@ -135,12 +135,36 @@ def createDataset(rootPath,targetPath):
             target = targetPath + '/' + folder + '/' + 'data' + image.replace('.JPEG','.json')
             saveSIFT(target,keypoints_sift,descriptors)
 
-#def CodeBookGeneration():
+from scipy.cluster.vq import vq, kmeans, whiten
+def CodeBookGeneration(features):
+    vocab = 200 # hyperparameter
+    iterations = 10
+    vocab,distortion = kmeans(features,k_or_guess=vocab,iter=iterations)
     # get the features for a given class
+    return centers
 
+def BagOfSIFT(features,vocab):
 
-
+    # for all of the features
+    # compute the pairwise distance between the columns
+    #  D(i,j) = sum (X(:,i) - Y(:,j)).^2
+    # then normalize the histogram over the minimum distances 
+    # https://www.cc.gatech.edu/classes/AY2016/cs4476_fall/results/proj4/html/hgarrison3/index.html
 if __name__ == "__main__":
-    root = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train"
-    target = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train_data"
-    createDataset(root,target)
+    # root = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train"
+    # target = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train_data"
+    # createDataset(root,target)
+    features  = np.array([[ 1.9,2.3],
+                    [ 1.5,2.5],
+                    [ 0.8,0.6],
+                    [ 0.4,1.8],
+                    [ 0.1,0.1],
+                    [ 0.2,1.8],
+                    [ 2.0,0.5],
+                    [ 0.3,1.5],
+                    [ 1.0,1.0]])
+    whitened = whiten(features)
+    book = np.array((whitened[0],whitened[2]))
+    [a,b] = kmeans(whitened,book)
+
+    print(a)
