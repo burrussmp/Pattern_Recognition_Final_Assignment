@@ -43,15 +43,15 @@ def saveSIFT(targetPath,keyPoints,descriptors):
             "x": point.pt[0],
             "y": point.pt[1],
             "_size": point.size,
-            "_angle": point.angle, 
-            "_response": point.response, 
-            "_octave": point.octave, 
+            "_angle": point.angle,
+            "_response": point.response,
+            "_octave": point.octave,
             "_class_id": point.class_id,
         }
         index["KeyPoints"].append(temp)
         # Dump the keypoints
         with open(targetPath,"w") as csvfile:
-            json.dump(index,csvfile) 
+            json.dump(index,csvfile)
 """
 readSIFT
 --------------------
@@ -76,10 +76,10 @@ def readSIFT(targetPath):
                 _angle=point["_angle"],
                 _response=point["_response"],
                 _octave=point["_octave"],
-                _class_id=point["_class_id"]) 
+                _class_id=point["_class_id"])
             kp.append(temp)
         descriptors = np.array(data["description"])
-        
+
         return [kp,descriptors]
 
 """
@@ -115,6 +115,7 @@ def createDataset(rootPath,targetPath):
     # create a SIFT object
     sift = cv2.xfeatures2d.SIFT_create()
     # for all the folders in the root path
+    i = 0
     for folder in os.listdir(rootPath):
         try:
             os.mkdir(targetPath + '/' + folder)
@@ -134,7 +135,8 @@ def createDataset(rootPath,targetPath):
             # save results as a JSON
             target = targetPath + '/' + folder + '/' + 'data' + image.replace('.JPEG','.json')
             saveSIFT(target,keypoints_sift,descriptors)
-
+            print('Number of JSONS created: ' + str(i))
+            i += 1
 #def CodeBookGeneration():
     # get the features for a given class
 
