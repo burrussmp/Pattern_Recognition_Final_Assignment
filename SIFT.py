@@ -338,15 +338,23 @@ def showSIFT():
     plt.imshow(match_img)
     plt.show()
     # save results as a JSON
+    img = cv2.imread('./watch1.jpg')
+    img_gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    keypoints_sift, descriptors1 = sift.detectAndCompute(img_gray, None)
+    cv2.drawKeypoints(img, keypoints_sift,img)
+    plt.imshow(img)
+    plt.show()
+    print(descriptors1)
+    print(descriptors1.shape)
 
 
 
-VOCABLENGTH = 50 # hyperparameter
+VOCABLENGTH = 100 # hyperparameter
 if __name__ == "__main__":
     base = "/media/burrussmp/99e21975-0750-47a1-a665-b2522e4753a6/ILSVRC2012/"
     do_main(base+'heatmap_train',base+'heatmap_train_data',base+'heatmap_val',base+'heatmap_val_data','./heatmap',modelType=0)
     
-    #showSIFT()
-
-    #do_main(base+'train',base+'train_data',base+'val',base+'val_data','./regular',modelType=1)
+    
+    # showSIFT()
     # base = "/media/burrussmp/99e21975-0750-47a1-a665-b2522e4753a6/ILSVRC2012/"
+    # do_main(base+'train',base+'train_data',base+'val',base+'val_data','./regular',modelType=1)
