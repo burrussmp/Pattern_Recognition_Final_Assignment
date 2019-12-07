@@ -31,27 +31,31 @@ descriptpors: nx128 numpy array of descriptors
 Saves JSON file
 """
 def saveSIFT(targetPath,keyPoints,descriptors):
-    index = {
-        "targetPath": targetPath,
-        "type" : 'KeyPoint',
-        "KeyPoints": [],
-        'description' : descriptors.tolist()
-    }
-    i = 0
-    for point in keyPoints:
-        temp = {
-            "x": point.pt[0],
-            "y": point.pt[1],
-            "_size": point.size,
-            "_angle": point.angle,
-            "_response": point.response,
-            "_octave": point.octave,
-            "_class_id": point.class_id,
+    try:
+        index = {
+            "targetPath": targetPath,
+            "type" : 'KeyPoint',
+            "KeyPoints": [],
+            'description' : descriptors.tolist()
         }
-        index["KeyPoints"].append(temp)
-        # Dump the keypoints
-        with open(targetPath,"w") as csvfile:
-            json.dump(index,csvfile)
+        i = 0
+        for point in keyPoints:
+            temp = {
+                "x": point.pt[0],
+                "y": point.pt[1],
+                "_size": point.size,
+                "_angle": point.angle,
+                "_response": point.response,
+                "_octave": point.octave,
+                "_class_id": point.class_id,
+            }
+            index["KeyPoints"].append(temp)
+            # Dump the keypoints
+            #if not os.path.exists(targetPath):
+            with open(targetPath,"w") as csvfile:
+                json.dump(index,csvfile)
+    except Exception as e:
+        print(e)
 """
 readSIFT
 --------------------
@@ -121,7 +125,7 @@ def createDataset(rootPath,targetPath):
             os.mkdir(targetPath + '/' + folder)
         except OSError:
             print("ERROR: Could not create folder")
-            return
+            print(OSError)
         else:
             print("Created Folder: " + targetPath + '/' + folder )
         # for all the images in that class
@@ -147,15 +151,15 @@ def CodeBookGeneration(features):
     return centers
 
 def BagOfSIFT(features,vocab):
-
+    pass
     # for all of the features
     # compute the pairwise distance between the columns
     #  D(i,j) = sum (X(:,i) - Y(:,j)).^2
     # then normalize the histogram over the minimum distances
     # https://www.cc.gatech.edu/classes/AY2016/cs4476_fall/results/proj4/html/hgarrison3/index.html
 if __name__ == "__main__":
-    root = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train"
-    target = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/heatmap_train_data"
+    root = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/ILSVRC2012/heatmap_train"
+    target = "/media/scope/99e21975-0750-47a1-a665-b2522e4753a6/ILSVRC2012/heatmap_train_data"
     createDataset(root,target)
     # features  = np.array([[ 1.9,2.3],
     #                 [ 1.5,2.5],
